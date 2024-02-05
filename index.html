@@ -132,11 +132,7 @@
             background-color: rgba(0, 0, 0, .7);
         }
 
-        .xWin {
-            display: none;
-            justify-content: space-around;
-        }
-        .oWin {
+        .xWin, .oWin, .tiegame {
             display: none;
             justify-content: space-around;
         }
@@ -196,12 +192,12 @@
         <span>O's WIN</span>
         <button class="comic-button reload">Play Again?</button>
     </div>
+    <div class="winner tiegame">
+        <span>Tie Game!</span>
+        <button class="comic-button reload">Play Again?</button>
+    </div>
 
     <script>
-        // Exercise: Tic-tac-toe Game
-        // 1. Create a tic-tac-toe game board. There is to be a 3x3 grid of boxes in HTML. You are free to manually create the HTML or use JS to create the boxes. Style appropriately to suit you with CSS.
-        // 2. Create the logic to react appropriately (X's and O's) to click events on the boxes. Clicking on an box already taken (X or O) should not do anything on that box.
-
         //set up dem variables for easy access
         let a1 = document.querySelector(".toprow .left"); let a2 = document.querySelector(".toprow .middle"); let a3 = document.querySelector(".toprow .right");
         let b1 = document.querySelector(".midrow .left"); let b2 = document.querySelector(".midrow .middle"); let b3 = document.querySelector(".midrow .right");
@@ -210,9 +206,6 @@
         let cellGroup = document.querySelectorAll(".cell");
         cellGroup.forEach((box) => {
             box.addEventListener("click", enterXO);
-        // BONUS:
-        // 6. When hovering over a valid next move, the box background should turn a shade of green.
-        // When hoving over an invalid move, the box background should turn red.
             box.addEventListener("mouseover", () => {
                 if (box.innerHTML === "") {
                     box.style.backgroundColor = "lightgreen";
@@ -256,13 +249,13 @@
             }
             winnerCheck();
             console.log(turnCount);
-            // 3. Update the interface to display the next turn (X's or O's).
         }
 
         let xWin = document.querySelector(".xWin");
         let oWin = document.querySelector(".oWin");
+        let noWin = document.querySelector(".tiegame");
 
-        let indexCounter = 0; //this variable for marking the movehistory divs so the timeTravel function can work
+        let indexCounter = 0;
         function createLog(historyArr, turn) {
             if (playLogDisplay.hasChildNodes()) {
                 let indexCounter = parseInt(document.querySelector(".turn:last-child").getAttribute("id"));
@@ -275,15 +268,15 @@
             playLogDisplay.appendChild(newLine);
         }
 
-        // 4. Create a function to determine winning combinations and add it to the existing logic to check for a win condition. There are many different ways to determine a win -- find one that works for you and implement it!
         function winnerCheck() {
-            if ((a1.innerHTML === a2.innerHTML && a1.innerHTML === a3.innerHTML && a1.innerHTML !== "") ||
+            if (turnCount >= 10) {
+                noWin.style.display = "flex";
+            } else if ((a1.innerHTML === a2.innerHTML && a1.innerHTML === a3.innerHTML && a1.innerHTML !== "") ||
             (b1.innerHTML === b2.innerHTML && b1.innerHTML === b3.innerHTML && b1.innerHTML !== "") ||
             (c1.innerHTML === c2.innerHTML && c1.innerHTML === c3.innerHTML && c1.innerHTML !== "") ||
             (a1.innerHTML === b1.innerHTML && a1.innerHTML === c1.innerHTML && a1.innerHTML !== "") ||
             (a2.innerHTML === b2.innerHTML && a2.innerHTML === c2.innerHTML && a2.innerHTML !== "") ||
             (a3.innerHTML === b3.innerHTML && a3.innerHTML === c3.innerHTML && a3.innerHTML !== "") ||
-            (a2.innerHTML === b2.innerHTML && a1.innerHTML === c3.innerHTML && a2.innerHTML !== "") ||
             (a3.innerHTML === b2.innerHTML && a3.innerHTML === c1.innerHTML && a3.innerHTML !== "") ||
             (a1.innerHTML === b2.innerHTML && a1.innerHTML === c3.innerHTML && a1.innerHTML !== "")) {
                 cellGroup.forEach((box) => {
@@ -298,7 +291,6 @@
             }
         }
 
-        // 5. Upon completion of a game, announce the winner and present a "Play Again" button that resets the board for another round.
         let playAgain = document.querySelectorAll(".reload");
         playAgain.forEach((clicker) => {
             clicker.addEventListener("click", refreshPage);
@@ -307,19 +299,6 @@
         function refreshPage(){
             window.location.reload();
         }
-
-
-        //movelog - create an array that populates each index with the moves made in order (i.e. if the player(s) choose a3 then b1
-        //the array will equal [a3, b1])
-        //since the moves always start with X, there's no need to keep track of player priority
-
-
-        // 7. Keep a history of all moves taken and display each point in the "move history" as a link somewhere on the UI. (Eg. Move #5) The current move state will be a link in the move history called "Current".
-        // Clicking on the link in the move list should take the gameboard back to that point in the move history.
-
-        // 8. Even while viewing a past move using the move history, the user can then play another move, which creates a new future to follow (ie, resets the move history links to follow this new move into a new future),
-        // or they can click back to any other move in the move history, including the future moves if they exist, including "Current" to get back to where they were before reviewing move history.
-
     </script>
 </body>
 
